@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: Xxf86vm
+Description: XFree86 Video Mode Extension Library
+Version: @VERSION@
+Cflags: -I${includedir} @XXF86VM_CFLAGS@
+Libs: -L${libdir} -lXxf86vm @XXF86VM_LIBS@
