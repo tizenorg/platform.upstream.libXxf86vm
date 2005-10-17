@@ -29,7 +29,7 @@ libmandir = $(mandir)/man$(LIB_MAN_SUFFIX)
 
 libman_SOURCES = XF86VM.man
 
-BUILT_SOURCES = .shadows.DONE
+BUILT_SOURCES = shadows.DONE
 
 EXTRA_DIST = $(libman_SOURCES)
 
@@ -82,7 +82,7 @@ XF86VM_shadows =                            \
     XF86VidModeGetGammaRampSize             \
     XF86VidModeGetPermissions
 
-.shadows.DONE:
+shadows.DONE:
 	-rm -f $(XF86VM_shadows:=.$(LIB_MAN_SUFFIX))
 	(for i in $(XF86VM_shadows:=.$(LIB_MAN_SUFFIX)) ; do \
 	 echo .so man$(LIB_MAN_SUFFIX)/XF86VM.$(LIB_MAN_SUFFIX) > $$i; \
