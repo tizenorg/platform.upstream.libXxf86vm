@@ -35,8 +35,8 @@ EXTRA_DIST = $(libman_SOURCES)
 
 CLEANFILES = $(libman_DATA) $(BUILT_SOURCES)
 
-libman_DATA = $(libman_SOURCES:man=$(LIB_MAN_SUFFIX)) \
-	      $(XF86VM_shadows:=.$(LIB_MAN_SUFFIX))
+libman_DATA = $(libman_SOURCES:man=@LIB_MAN_SUFFIX@) \
+	      $(XF86VM_shadows:=.@LIB_MAN_SUFFIX@)
 
 SED = sed
 
@@ -83,7 +83,7 @@ XF86VM_shadows =                            \
     XF86VidModeGetPermissions
 
 shadows.DONE:
-	-rm -f $(XF86VM_shadows:=.$(LIB_MAN_SUFFIX))
-	(for i in $(XF86VM_shadows:=.$(LIB_MAN_SUFFIX)) ; do \
+	-rm -f $(XF86VM_shadows:=.@LIB_MAN_SUFFIX@)
+	(for i in $(XF86VM_shadows:=.@LIB_MAN_SUFFIX@) ; do \
 	 echo .so man$(LIB_MAN_SUFFIX)/XF86VM.$(LIB_MAN_SUFFIX) > $$i; \
 	 done)
