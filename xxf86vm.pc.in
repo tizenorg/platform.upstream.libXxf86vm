@@ -6,5 +6,7 @@ includedir=@includedir@
 Name: Xxf86vm
 Description: XFree86 Video Mode Extension Library
 Version: @VERSION@
-Cflags: -I${includedir} @XXF86VM_CFLAGS@
-Libs: -L${libdir} -lXxf86vm @XXF86VM_LIBS@
+Requires: xf86vidmodeproto
+Requires.private: x11 xext
+Cflags: -I${includedir}
+Libs: -L${libdir} -lXxf86vm
