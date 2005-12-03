@@ -13,6 +13,7 @@ AC_PROG_LIBTOOL
 # Checks for pkg-config packages
 PKG_CHECK_MODULES(XXF86VM, xproto x11 xextproto xext xf86vidmodeproto)
 
+XORG_CHECK_MALLOC_ZERO
 XORG_MANPAGE_SECTIONS
 XORG_RELEASE_VERSION
 
