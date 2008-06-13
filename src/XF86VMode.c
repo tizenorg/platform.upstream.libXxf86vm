@@ -963,12 +963,8 @@ XF86VidModeGetMonitor(dpy, screen, monitor)
     }
     if (rep.vendorLength)
 	_XReadPad(dpy, monitor->vendor, rep.vendorLength);
-    else
-	monitor->vendor[0] = '\0';
     if (rep.modelLength)
 	_XReadPad(dpy, monitor->model, rep.modelLength);
-    else
-	monitor->model[0] = '\0';
 	
     UnlockDisplay(dpy);
     SyncHandle();
