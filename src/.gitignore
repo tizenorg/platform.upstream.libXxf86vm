@@ -1,9 +1,0 @@
-config.h
-config.h.in
-.deps
-.libs
-libXxf86vm.la
-*.lo
-Makefile
-Makefile.in
-stamp-h1
