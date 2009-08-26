@@ -15,7 +15,7 @@ AC_PROG_LIBTOOL
 XORG_CWARNFLAGS
 
 # Checks for pkg-config packages
-PKG_CHECK_MODULES(XXF86VM, xproto x11 xextproto xext xf86vidmodeproto)
+PKG_CHECK_MODULES(XXF86VM, xproto x11 xextproto xext [xf86vidmodeproto >= 2.2.99.1])
 
 XORG_CHECK_MALLOC_ZERO
 XORG_MANPAGE_SECTIONS
