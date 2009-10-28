@@ -5,9 +5,12 @@ pkgconfig_DATA = xxf86vm.pc
 
 EXTRA_DIST = xxf86vm.pc.in 
 
-.PHONY: ChangeLog
+.PHONY: ChangeLog INSTALL
+
+INSTALL:
+	$(INSTALL_CMD)
 
 ChangeLog:
 	$(CHANGELOG_CMD)
 
-dist-hook: ChangeLog
+dist-hook: ChangeLog INSTALL
