@@ -23,18 +23,37 @@
 
 libmandir = $(LIB_MAN_DIR)
 
-LIB_MAN_DIR_SUFFIX = $(LIB_MAN_DIR:@mandir@/man%=%)
+libman_PRE =				\
+	XF86VM.man			\
+	$(XF86VM_shadows:=.man)
 
-libman_PRE = XF86VM.man
-
-BUILT_SOURCES = $(XF86VM_shadowmen)
+XF86VM_shadows =			\
+	XF86VidModeQueryExtension	\
+	XF86VidModeQueryVersion		\
+	XF86VidModeGetModeLine		\
+	XF86VidModeGetAllModeLines	\
+	XF86VidModeDeleteModeLine	\
+	XF86VidModeModModeLine		\
+	XF86VidModeSwitchMode		\
+	XF86VidModeSwitchToMode		\
+	XF86VidModeLockModeSwitch	\
+	XF86VidModeGetMonitor		\
+	XF86VidModeGetViewPort		\
+	XF86VidModeSetViewPort		\
+	XF86VidModeValidateModeLine	\
+	XF86VidModeSetClientVersion	\
+	XF86VidModeGetDotClocks		\
+	XF86VidModeGetGamma		\
+	XF86VidModeSetGamma		\
+	XF86VidModeSetGammaRamp		\
+	XF86VidModeGetGammaRamp		\
+	XF86VidModeGetGammaRampSize	\
+	XF86VidModeGetPermissions
 
 EXTRA_DIST = $(libman_PRE)
+CLEANFILES = $(libman_DATA)
 
-CLEANFILES = $(libman_DATA) $(BUILT_SOURCES)
-
-libman_DATA = $(libman_PRE:man=@LIB_MAN_SUFFIX@) \
-	      $(XF86VM_shadowmen)
+libman_DATA = $(libman_PRE:man=@LIB_MAN_SUFFIX@)
 
 # String replacements in MAN_SUBSTS now come from xorg-macros.m4 via configure
 SUFFIXES = .$(LIB_MAN_SUFFIX) .man
@@ -42,31 +61,4 @@ SUFFIXES = .$(LIB_MAN_SUFFIX) .man
 .man.$(LIB_MAN_SUFFIX):
 	$(AM_V_GEN)$(SED) $(MAN_SUBSTS) < $< > $@
 
-# Generate man page shadow files (Replaces InstallManPageAliases from Imake)
 
-XF86VM_shadows =                            \
-    XF86VidModeQueryExtension               \
-    XF86VidModeQueryVersion                 \
-    XF86VidModeGetModeLine                  \
-    XF86VidModeGetAllModeLines              \
-    XF86VidModeDeleteModeLine               \
-    XF86VidModeModModeLine                  \
-    XF86VidModeSwitchMode                   \
-    XF86VidModeSwitchToMode                 \
-    XF86VidModeLockModeSwitch               \
-    XF86VidModeGetMonitor                   \
-    XF86VidModeGetViewPort                  \
-    XF86VidModeSetViewPort                  \
-    XF86VidModeValidateModeLine             \
-    XF86VidModeSetClientVersion             \
-    XF86VidModeGetDotClocks                 \
-    XF86VidModeGetGamma                     \
-    XF86VidModeSetGamma                     \
-    XF86VidModeSetGammaRamp                 \
-    XF86VidModeGetGammaRamp                 \
-    XF86VidModeGetGammaRampSize             \
-    XF86VidModeGetPermissions
-
-XF86VM_shadowmen = $(XF86VM_shadows:=.@LIB_MAN_SUFFIX@)
-$(XF86VM_shadowmen):
-	$(AM_V_GEN)echo ".so man$(LIB_MAN_DIR_SUFFIX)/XF86VM.$(LIB_MAN_SUFFIX)" > $@
