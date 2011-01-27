@@ -14,7 +14,6 @@ XORG_DEFAULT_OPTIONS
 AM_CONFIG_HEADER(src/config.h)
 
 # Check for progs
-AC_PROG_CC
 AC_PROG_LIBTOOL
 
 # Checks for pkg-config packages
