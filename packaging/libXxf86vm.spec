@@ -18,7 +18,6 @@ X.Org X11 libXxf86vm runtime library
 Summary:        X
 Group:          Development/Libraries
 Requires:       %{name} = %{version}
-Provides:       libxxf86vm-devel
 
 %description devel
 X.Org X11 libXxf86vm development package
@@ -27,8 +26,7 @@ X.Org X11 libXxf86vm development package
 %setup -q
 
 %build
-%reconfigure --disable-static \
-	       LDFLAGS="${LDFLAGS} -Wl,--hash-style=both -Wl,--as-needed"
+%reconfigure --disable-static 
 make %{?_smp_mflags}
 
 %install
@@ -42,7 +40,7 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 %files
 %defattr(-,root,root,-)
-%doc README COPYING ChangeLog
+%license COPYING 
 %{_libdir}/libXxf86vm.so.1
 %{_libdir}/libXxf86vm.so.1.0.0
 
@@ -50,5 +48,4 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 %defattr(-,root,root,-)
 %{_libdir}/libXxf86vm.so
 %{_libdir}/pkgconfig/xxf86vm.pc
-#%{_mandir}/man3/*.3*
 %{_includedir}/X11/extensions/xf86vmode.h
