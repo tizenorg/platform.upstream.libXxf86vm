@@ -2,9 +2,9 @@ Name:           libXxf86vm
 Version:        1.1.2
 Release:        1
 License:        MIT
-Summary:        X
+Summary:        X.org libXxf86vm library
 Url:            http://www.x.org
-Group:          System Environment/Libraries
+Group:          Graphics/X Window System
 Source:         %{name}-%{version}.tar.bz2
 
 BuildRequires:  pkgconfig(xext)
@@ -15,7 +15,7 @@ BuildRequires:  pkgconfig(xorg-macros)
 X.Org X11 libXxf86vm runtime library
 
 %package devel
-Summary:        X
+Summary:        X.org libXxf86vm library
 Group:          Development/Libraries
 Requires:       %{name} = %{version}
 
@@ -30,12 +30,12 @@ X.Org X11 libXxf86vm development package
 make %{?_smp_mflags}
 
 %install
-make install DESTDIR=%{buildroot} INSTALL="install -p"
-find %{buildroot} -name '*.la' -exec rm -f {} ';'
+%make_install
 
 %remove_docs
 
 %post -p /sbin/ldconfig
+
 %postun -p /sbin/ldconfig
 
 %files
