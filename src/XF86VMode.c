@@ -271,7 +271,10 @@ XF86VidModeGetModeLine(Display* dpy, int screen, int* dotclock,
     }
 
     if (modeline->privsize > 0) {
-	modeline->private = Xcalloc(modeline->privsize, sizeof(INT32));
+	if (modeline->privsize < (INT_MAX / sizeof(INT32)))
+	    modeline->private = Xcalloc(modeline->privsize, sizeof(INT32));
+	else
+	    modeline->private = NULL;
 	if (modeline->private == NULL) {
 	    _XEatDataWords(dpy, rep.length -
 		((SIZEOF(xXF86VidModeGetModeLineReply) - SIZEOF(xReply)) >> 2));
