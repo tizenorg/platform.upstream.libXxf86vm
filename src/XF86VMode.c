@@ -30,11 +30,27 @@ from Kaleb S. KEITHLEY.
 
 /* THIS IS NOT AN X CONSORTIUM STANDARD */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <X11/Xlibint.h>
 #include <X11/extensions/xf86vmproto.h>
 #include <X11/extensions/xf86vmode.h>
 #include <X11/extensions/Xext.h>
 #include <X11/extensions/extutil.h>
+#include <limits.h>
+
+#ifndef HAVE__XEATDATAWORDS
+static inline void _XEatDataWords(Display *dpy, unsigned long n)
+{
+# ifndef LONG64
+    if (n >= (ULONG_MAX >> 2))
+        _XIOError(dpy);
+# endif
+    _XEatData (dpy, n << 2);
+}
+#endif
 
 #ifdef DEBUG
 #include <stdio.h>
@@ -257,7 +273,8 @@ XF86VidModeGetModeLine(Display* dpy, int screen, int* dotclock,
     if (modeline->privsize > 0) {
 	modeline->private = Xcalloc(modeline->privsize, sizeof(INT32));
 	if (modeline->private == NULL) {
-	    _XEatData(dpy, (modeline->privsize) * sizeof(INT32));
+	    _XEatDataWords(dpy, rep.length -
+		((SIZEOF(xXF86VidModeGetModeLineReply) - SIZEOF(xReply)) >> 2));
 	    result = False;
 	} else
 	    _XRead(dpy, (char*)modeline->private, modeline->privsize * sizeof(INT32));
@@ -318,10 +335,8 @@ XF86VidModeGetAllModeLines(Display* dpy, int screen, int* modecount,
     if (!(modelines = (XF86VidModeModeInfo **) Xcalloc(rep.modecount,
                                           sizeof(XF86VidModeModeInfo *)
                                           +sizeof(XF86VidModeModeInfo)))) {
-	if (majorVersion < 2)
-            _XEatData(dpy, (rep.modecount) * sizeof(xXF86OldVidModeModeInfo));
-	else
-            _XEatData(dpy, (rep.modecount) * sizeof(xXF86VidModeModeInfo));
+	_XEatDataWords(dpy, rep.length -
+	    ((SIZEOF(xXF86VidModeGetAllModeLinesReply) - SIZEOF(xReply)) >> 2));
 	UnlockDisplay(dpy);
 	SyncHandle();
         return False;
@@ -354,7 +369,7 @@ XF86VidModeGetAllModeLines(Display* dpy, int screen, int* modecount,
 		if (oldxmdline.privsize > 0) {
 	            if (!(modelines[i]->private =
 			    Xcalloc(oldxmdline.privsize, sizeof(INT32)))) {
-			_XEatData(dpy, (oldxmdline.privsize) * sizeof(INT32));
+			_XEatDataWords(dpy, oldxmdline.privsize);
 		    } else {
 			_XRead(dpy, (char*)modelines[i]->private,
 			     oldxmdline.privsize * sizeof(INT32));
@@ -384,7 +399,7 @@ XF86VidModeGetAllModeLines(Display* dpy, int screen, int* modecount,
 		if (xmdline.privsize > 0) {
 		    if (!(modelines[i]->private =
 			    Xcalloc(xmdline.privsize, sizeof(INT32)))) {
-			_XEatData(dpy, (xmdline.privsize) * sizeof(INT32));
+			_XEatDataWords(dpy, xmdline.privsize);
 		    } else {
 			_XRead(dpy, (char*)modelines[i]->private,
 			     xmdline.privsize * sizeof(INT32));
@@ -902,8 +917,7 @@ XF86VidModeGetMonitor(Display* dpy, int screen, XF86VidModeMonitor* monitor)
 	monitor->hsync = monitor->vsync = NULL;
     }
     if (result == False) {
-	_XEatData(dpy, (rep.nhsync + rep.nvsync) * 4 +
-		  ((rep.vendorLength+3) & ~3) + ((rep.modelLength+3) & ~3));
+	_XEatDataWords(dpy, rep.length);
 	Xfree(monitor->vendor);
 	monitor->vendor = NULL;
 	Xfree(monitor->model);
@@ -1036,7 +1050,8 @@ XF86VidModeGetDotClocks(Display* dpy, int screen, int *flagsPtr,
 
     dotclocks = Xcalloc(rep.clocks, sizeof(int));
     if (dotclocks == NULL) {
-        _XEatData(dpy, (rep.clocks) * 4);
+        _XEatDataWords(dpy, rep.length -
+	    ((SIZEOF(xXF86VidModeGetDotClocksReply) - SIZEOF(xReply)) >> 2));
         result = False;
     }
     else {
