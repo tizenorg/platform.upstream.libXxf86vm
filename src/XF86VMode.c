@@ -256,7 +256,6 @@ XF86VidModeGetModeLine(Display* dpy, int screen, int* dotclock,
     if (modeline->privsize > 0) {
 	if (!(modeline->private = Xcalloc(modeline->privsize, sizeof(INT32)))) {
 	    _XEatData(dpy, (modeline->privsize) * sizeof(INT32));
-	    Xfree(modeline->private);
 	    return False;
 	}
 	_XRead(dpy, (char*)modeline->private, modeline->privsize * sizeof(INT32));
@@ -321,7 +320,6 @@ XF86VidModeGetAllModeLines(Display* dpy, int screen, int* modecount,
             _XEatData(dpy, (rep.modecount) * sizeof(xXF86OldVidModeModeInfo));
 	else
             _XEatData(dpy, (rep.modecount) * sizeof(xXF86VidModeModeInfo));
-        Xfree(modelines);
         return False;
     }
     mdinfptr = (XF86VidModeModeInfo *) (
@@ -353,7 +351,6 @@ XF86VidModeGetAllModeLines(Display* dpy, int screen, int* modecount,
 	            if (!(modelines[i]->private =
 			    Xcalloc(oldxmdline.privsize, sizeof(INT32)))) {
 			_XEatData(dpy, (oldxmdline.privsize) * sizeof(INT32));
-			Xfree(modelines[i]->private);
 		    } else {
 			_XRead(dpy, (char*)modelines[i]->private,
 			     oldxmdline.privsize * sizeof(INT32));
@@ -384,7 +381,6 @@ XF86VidModeGetAllModeLines(Display* dpy, int screen, int* modecount,
 		    if (!(modelines[i]->private =
 			    Xcalloc(xmdline.privsize, sizeof(INT32)))) {
 			_XEatData(dpy, (xmdline.privsize) * sizeof(INT32));
-			Xfree(modelines[i]->private);
 		    } else {
 			_XRead(dpy, (char*)modelines[i]->private,
 			     xmdline.privsize * sizeof(INT32));
@@ -1039,7 +1035,6 @@ XF86VidModeGetDotClocks(Display* dpy, int screen, int *flagsPtr,
 
     if (!(dotclocks = (int*) Xcalloc(rep.clocks, sizeof(int)))) {
         _XEatData(dpy, (rep.clocks) * 4);
-        Xfree(dotclocks);
         return False;
     }
 
