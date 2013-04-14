@@ -1014,6 +1014,7 @@ XF86VidModeGetDotClocks(Display* dpy, int screen, int *flagsPtr,
     xXF86VidModeGetDotClocksReq *req;
     int i, *dotclocks;
     CARD32 dotclk;
+    Bool result = True;
 
     XF86VidModeCheckExtension (dpy, info, False);
 
@@ -1033,19 +1034,21 @@ XF86VidModeGetDotClocks(Display* dpy, int screen, int *flagsPtr,
     *maxclocksPtr = rep.maxclocks;
     *flagsPtr     = rep.flags;
 
-    if (!(dotclocks = (int*) Xcalloc(rep.clocks, sizeof(int)))) {
+    dotclocks = Xcalloc(rep.clocks, sizeof(int));
+    if (dotclocks == NULL) {
         _XEatData(dpy, (rep.clocks) * 4);
-        return False;
+        result = False;
     }
-
-    for (i = 0; i < rep.clocks; i++) {
-        _XRead(dpy, (char*)&dotclk, 4);
-	dotclocks[i] = dotclk;
+    else {
+	for (i = 0; i < rep.clocks; i++) {
+	    _XRead(dpy, (char*)&dotclk, 4);
+	    dotclocks[i] = dotclk;
+	}
     }
     *clocksPtr = dotclocks;
     UnlockDisplay(dpy);
     SyncHandle();
-    return True;
+    return result;
 }
 
 Bool
