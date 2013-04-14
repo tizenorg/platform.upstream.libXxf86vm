@@ -322,6 +322,8 @@ XF86VidModeGetAllModeLines(Display* dpy, int screen, int* modecount,
             _XEatData(dpy, (rep.modecount) * sizeof(xXF86OldVidModeModeInfo));
 	else
             _XEatData(dpy, (rep.modecount) * sizeof(xXF86VidModeModeInfo));
+	UnlockDisplay(dpy);
+	SyncHandle();
         return False;
     }
     mdinfptr = (XF86VidModeModeInfo *) (
