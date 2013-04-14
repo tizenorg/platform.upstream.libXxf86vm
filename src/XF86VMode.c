@@ -203,6 +203,7 @@ XF86VidModeGetModeLine(Display* dpy, int screen, int* dotclock,
     xXF86OldVidModeGetModeLineReply oldrep;
     xXF86VidModeGetModeLineReq *req;
     int majorVersion, minorVersion;
+    Bool result = True;
 
     XF86VidModeCheckExtension (dpy, info, False);
     XF86VidModeQueryVersion(dpy, &majorVersion, &minorVersion);
@@ -254,17 +255,18 @@ XF86VidModeGetModeLine(Display* dpy, int screen, int* dotclock,
     }
 
     if (modeline->privsize > 0) {
-	if (!(modeline->private = Xcalloc(modeline->privsize, sizeof(INT32)))) {
+	modeline->private = Xcalloc(modeline->privsize, sizeof(INT32));
+	if (modeline->private == NULL) {
 	    _XEatData(dpy, (modeline->privsize) * sizeof(INT32));
-	    return False;
-	}
-	_XRead(dpy, (char*)modeline->private, modeline->privsize * sizeof(INT32));
+	    result = False;
+	} else
+	    _XRead(dpy, (char*)modeline->private, modeline->privsize * sizeof(INT32));
     } else {
 	modeline->private = NULL;
     }
     UnlockDisplay(dpy);
     SyncHandle();
-    return True;
+    return result;
 }
 
 Bool
