@@ -1,0 +1,8 @@
+Change-Id: Ib22c4ab693e2ebfbdd5f47129d74dbaf9ce7f3d8
+Code-Review+2: Ryan Ware <ware@linux.intel.com>
+Verified+1: Ryan Ware <ware@linux.intel.com>
+Submitted-by: Ryan Ware <ware@linux.intel.com>
+Submitted-at: Mon, 08 Jul 2013 09:40:05 -0700
+Reviewed-on: https://review.tizen.org/gerrit/4819
+Project: platform/upstream/libXxf86vm
+Branch: refs/heads/tizen
