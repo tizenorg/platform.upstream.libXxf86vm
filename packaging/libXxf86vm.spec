@@ -1,3 +1,5 @@
+%bcond_with x
+
 Name:           libXxf86vm
 Version:        1.1.2
 Release:        1
@@ -11,6 +13,10 @@ Source1001: 	libXxf86vm.manifest
 BuildRequires:  pkgconfig(xext)
 BuildRequires:  pkgconfig(xf86vidmodeproto)
 BuildRequires:  pkgconfig(xorg-macros)
+
+%if !%{with x}
+ExclusiveArch:
+%endif
 
 %description
 X.Org X11 libXxf86vm runtime library
@@ -28,7 +34,7 @@ X.Org X11 libXxf86vm development package
 cp %{SOURCE1001} .
 
 %build
-%reconfigure --disable-static 
+%reconfigure --disable-static
 make %{?_smp_mflags}
 
 %install
@@ -43,7 +49,7 @@ make %{?_smp_mflags}
 %files
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%license COPYING 
+%license COPYING
 %{_libdir}/libXxf86vm.so.1
 %{_libdir}/libXxf86vm.so.1.0.0
 
