@@ -1,7 +1,7 @@
 %bcond_with x
 
 Name:           libXxf86vm
-Version:        1.1.2
+Version:        1.1.3
 Release:        1
 License:        MIT
 Summary:        X.org libXxf86vm library
@@ -34,7 +34,7 @@ X.Org X11 libXxf86vm development package
 cp %{SOURCE1001} .
 
 %build
-%reconfigure --disable-static
+%autogen --disable-static
 make %{?_smp_mflags}
 
 %install
